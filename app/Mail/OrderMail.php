@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class OrderMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $data;
 
     /**
@@ -19,7 +20,7 @@ class OrderMail extends Mailable
      */
     public function __construct($data)
     {
-       $this->data = $data;
+        $this->data = $data;
     }
 
     /**
@@ -30,6 +31,6 @@ class OrderMail extends Mailable
     public function build()
     {
         $order = $this->data;
-        return $this->from('support@support.com')->view('mail.order_mail',compact('order'))->subject('Email From E-commerce Multi Vendor Shop');
+        return $this->from('support@support.com')->view('mail.order_mail', compact('order'))->subject('Email From E-commerce Multi Vendor Shop');
     }
 }

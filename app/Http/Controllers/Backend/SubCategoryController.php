@@ -9,90 +9,95 @@ use App\Models\SubCategory;
 
 class SubCategoryController extends Controller
 {
-     public function AllSubCategory(){
+    public function AllSubCategory()
+    {
         $subcategories = SubCategory::latest()->get();
-        return view('backend.subcategory.subcategory_all',compact('subcategories'));
+        return view('backend.subcategory.subcategory_all', compact('subcategories'));
     } // End Method 
 
- 
-    public function AddSubCategory(){
 
-        $categories = Category::orderBy('category_name','ASC')->get();
-      return view('backend.subcategory.subcategory_add',compact('categories'));
+    public function AddSubCategory()
+    {
+
+        $categories = Category::orderBy('category_name', 'ASC')->get();
+        return view('backend.subcategory.subcategory_add', compact('categories'));
 
     }// End Method 
 
 
-    public function StoreSubCategory(Request $request){ 
+    public function StoreSubCategory(Request $request)
+    {
 
         SubCategory::insert([
             'category_id' => $request->category_id,
             'subcategory_name' => $request->subcategory_name,
-            'subcategory_slug' => strtolower(str_replace(' ', '-',$request->subcategory_name)), 
+            'subcategory_slug' => strtolower(str_replace(' ', '-', $request->subcategory_name)),
         ]);
 
-       $notification = array(
+        $notification = array(
             'message' => 'SubCategory Inserted Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('all.subcategory')->with($notification); 
+        return redirect()->route('all.subcategory')->with($notification);
 
     }// End Method 
 
 
-    public function EditSubCategory($id){
+    public function EditSubCategory($id)
+    {
 
-      $categories = Category::orderBy('category_name','ASC')->get();
-      $subcategory = SubCategory::findOrFail($id);
-      return view('backend.subcategory.subcategory_edit',compact('categories','subcategory'));
+        $categories = Category::orderBy('category_name', 'ASC')->get();
+        $subcategory = SubCategory::findOrFail($id);
+        return view('backend.subcategory.subcategory_edit', compact('categories', 'subcategory'));
 
     }// End Method 
 
 
-
-    public function UpdateSubCategory(Request $request){
+    public function UpdateSubCategory(Request $request)
+    {
 
         $subcat_id = $request->id;
 
-         SubCategory::findOrFail($subcat_id)->update([
+        SubCategory::findOrFail($subcat_id)->update([
             'category_id' => $request->category_id,
             'subcategory_name' => $request->subcategory_name,
-            'subcategory_slug' => strtolower(str_replace(' ', '-',$request->subcategory_name)), 
+            'subcategory_slug' => strtolower(str_replace(' ', '-', $request->subcategory_name)),
         ]);
 
-       $notification = array(
+        $notification = array(
             'message' => 'SubCategory Updated Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('all.subcategory')->with($notification); 
+        return redirect()->route('all.subcategory')->with($notification);
 
 
     }// End Method 
 
 
-    public function DeleteSubCategory($id){
+    public function DeleteSubCategory($id)
+    {
 
         SubCategory::findOrFail($id)->delete();
 
-         $notification = array(
+        $notification = array(
             'message' => 'SubCategory Deleted Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->back()->with($notification); 
+        return redirect()->back()->with($notification);
 
 
     }// End Method 
 
 
-    public function GetSubCategory($category_id){
-        $subcat = SubCategory::where('category_id',$category_id)->orderBy('subcategory_name','ASC')->get();
-            return json_encode($subcat);
+    public function GetSubCategory($category_id)
+    {
+        $subcat = SubCategory::where('category_id', $category_id)->orderBy('subcategory_name', 'ASC')->get();
+        return json_encode($subcat);
 
     }// End Method 
-
 
 
 }

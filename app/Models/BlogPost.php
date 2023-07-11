@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class BlogPost extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
-     public function blogcategory(){
-        return $this->belongsTo(BlogCategory::class,'category_id','id');
+    public function blogcategory()
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id', 'id');
     }
 
 

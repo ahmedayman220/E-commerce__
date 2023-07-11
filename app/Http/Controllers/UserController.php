@@ -8,16 +8,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
-{ 
-    public function UserDashboard(){
+{
+    public function UserDashboard()
+    {
 
         $id = Auth::user()->id;
         $userData = User::find($id);
-        return view('index',compact('userData'));
+        return view('index', compact('userData'));
 
     } // End Method 
 
- public function UserProfileStore(Request $request){
+    public function UserProfileStore(Request $request)
+    {
 
         $id = Auth::user()->id;
         $data = User::find($id);
@@ -25,14 +27,14 @@ class UserController extends Controller
         $data->username = $request->username;
         $data->email = $request->email;
         $data->phone = $request->phone;
-        $data->address = $request->address; 
+        $data->address = $request->address;
 
 
         if ($request->file('photo')) {
             $file = $request->file('photo');
-            @unlink(public_path('upload/user_images/'.$data->photo));
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('upload/user_images'),$filename);
+            @unlink(public_path('upload/user_images/' . $data->photo));
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('upload/user_images'), $filename);
             $data['photo'] = $filename;
         }
 
@@ -48,14 +50,15 @@ class UserController extends Controller
     } // End Mehtod 
 
 
-   public function UserLogout(Request $request){
+    public function UserLogout(Request $request)
+    {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-         $notification = array(
+        $notification = array(
             'message' => 'User Logout Successfully',
             'alert-type' => 'success'
         );
@@ -64,11 +67,12 @@ class UserController extends Controller
     } // End Mehtod 
 
 
- public function UserUpdatePassword(Request $request){
+    public function UserUpdatePassword(Request $request)
+    {
         // Validation 
         $request->validate([
             'old_password' => 'required',
-            'new_password' => 'required|confirmed', 
+            'new_password' => 'required|confirmed',
         ]);
 
         // Match The Old Password

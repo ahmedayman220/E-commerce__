@@ -4,13 +4,14 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Review; 
+use App\Models\Review;
 use Carbon\Carbon;
 use Auth;
 
 class ReviewController extends Controller
 {
-    public function StoreReview(Request $request){
+    public function StoreReview(Request $request)
+    {
 
         $product = $request->product_id;
         $vendor = $request->hvendor_id;
@@ -35,62 +36,66 @@ class ReviewController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->back()->with($notification); 
+        return redirect()->back()->with($notification);
 
     } // End Method 
 
 
+    public function PendingReview()
+    {
 
-    public function PendingReview(){
-
-        $review = Review::where('status',0)->orderBy('id','DESC')->get();
-        return view('backend.review.pending_review',compact('review'));
+        $review = Review::where('status', 0)->orderBy('id', 'DESC')->get();
+        return view('backend.review.pending_review', compact('review'));
 
     }// End Method 
 
 
-    public function ReviewApprove($id){
+    public function ReviewApprove($id)
+    {
 
-        Review::where('id',$id)->update(['status' => 1]);
+        Review::where('id', $id)->update(['status' => 1]);
 
         $notification = array(
             'message' => 'Review Approved Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->back()->with($notification); 
+        return redirect()->back()->with($notification);
 
     }// End Method 
 
-     public function PublishReview(){
+    public function PublishReview()
+    {
 
-        $review = Review::where('status',1)->orderBy('id','DESC')->get();
-        return view('backend.review.publish_review',compact('review'));
+        $review = Review::where('status', 1)->orderBy('id', 'DESC')->get();
+        return view('backend.review.publish_review', compact('review'));
 
     }// End Method 
 
 
-    public function ReviewDelete($id){
+    public function ReviewDelete($id)
+    {
 
         Review::findOrFail($id)->delete();
 
-         $notification = array(
+        $notification = array(
             'message' => 'Review Deleted Successfully',
             'alert-type' => 'success'
         );
 
-        return redirect()->back()->with($notification); 
+        return redirect()->back()->with($notification);
 
 
     }// End Method 
 
 
-    public function VendorAllReview(){
+    public function VendorAllReview()
+    {
 
         $id = Auth::user()->id;
 
-        $review = Review::where('vendor_id',$id)->where('status',1)->orderBy('id','DESC')->get();
-        return view('vendor.backend.review.approve_review',compact('review'));
+        $review = Review::where('vendor_id', $id)->where('status', 1)->orderBy('id', 'DESC')->get();
+        return view('vendor.backend.review.approve_review', compact('review'));
 
     }// End Method 
 
